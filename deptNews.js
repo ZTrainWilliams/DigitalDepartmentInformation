@@ -33,7 +33,7 @@ const adsKeyWords = [
   "福利",
 ];
 const hasAds = (title) => {
-  return adsKeyWords.some((text) => title.indexOf(text) !== -1);
+  return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
 };
 
 const getNews = () => {
