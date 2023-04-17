@@ -7,7 +7,7 @@ const webhook = `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${weworkKe
 // 咨询地址
 const newsUrl = "https://www.woshipm.com/api2/app/article/popular/daily";
 const productNewsUrl = "https://www.woshipm.com/api2/app/article/popular/daily";
-const iyunyingUrl = 'https://www.iyunying.org/'
+const yunyingUrl = 'https://www.yunyingpai.com/'
 const testUtl = 'https://blog.csdn.net/nav/test'
 const krUrl36 = 'https://36kr.com/'
 const frontNewsUrl = 'https://front-end-rss.vercel.app'
@@ -38,13 +38,14 @@ const hasAds = (title) => {
 
 const getNews = () => {
   const promiseAll = Promise.all([
+    getYunyingNews(),
     getProductNews(),
     getCsdnBlogNews(),
     getFrontNews(),
     getTestNews(),
   ])
   promiseAll.then((res) => {
-    sendNews(res)
+    // sendNews(res)
   }).catch((err) => {
     console.log(err);
   });
@@ -111,29 +112,29 @@ function getProductNews() {
 }
 
 // 获取运营咨询
-function getIyunyingNews() {
+function getYunyingNews() {
   return new Promise((resolve, reject) => {
-    request.get(iyunyingUrl, (err, res, body) => { // 403?
+    request.get(yunyingUrl, (err, res, body) => { // 403?
       if (!err) {
         const $ = cheerio.load(body);
-        const newsDom = $('.post-loop-default');
-        console.log(body)
+        const newsDom = $('.y-post-list');
         let newList = []
+        
         newsDom[0]?.children.forEach((item) => {
           const dom = $(item)
-          const title = dom.find('.item-title').text()
-          title && newList.push({
-            type: 'operations',
-            time: dom.find('.date').text(),
+          const title = dom.find('.y-title-new a').text()
+          title && title.indexOf('课程') === -1 && title.indexOf('人人都是产品经理') === -1 && newList.push({
+            type: 'yunying',
+            time: '',
             title: title,
-            href: dom.find('.item-title a').attr('href'),
-            description: dom.find('.item-excerpt').text(),
-            them: '',
-            articleAuthor: dom.find('.author span').text(),
-            viewCount: dom.find('.item-meta-right .views').text()
+            href: dom.find('.y-title-new a').attr('href'),
+            description: dom.find('.y-snipper-new').text(),
+            them: dom.find('.middotDivider a').text(),
+            articleAuthor: dom.find('.y-meta-new .author').text(),
+            viewCount: 0
           })
         })
-        const result = { title: '运营', type: 'operations', list: sortDate(newList).sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
+        const result = { title: '运营', type: 'operations', list: newList.slice(0, 3) }
         resolve(result)
       } else {
         reject(null);
@@ -154,8 +155,8 @@ function getFrontNews() {
         const reg = /[\;][\n]*[\s]*?$/; //去掉尾部分号
         let sendList = []; //存储推送列表
         const rangeTime = [
-          dayjs.subtract(10, "day").format("YYYY-MM-DD"),
-          dayjs.format("YYYY-MM-DD"),
+          dayjs().subtract(10, "day").format("YYYY-MM-DD"),
+          dayjs().format("YYYY-MM-DD"),
         ];
         newsList.map((item) => {
           //取数据LINKS_DATA变量值
@@ -192,6 +193,7 @@ function getFrontNews() {
         resolve({ title: '前端', type: 'front', list: sortDate(result).slice(0, 5) })
       } else {
         console.error(err);
+        reject(null)
       }
     });
   })
