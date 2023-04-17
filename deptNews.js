@@ -38,8 +38,8 @@ const hasAds = (title) => {
 
 const getNews = () => {
   const promiseAll = Promise.all([
-    getYunyingNews(),
     getProductNews(),
+    getYunyingNews(),
     getCsdnBlogNews(),
     getFrontNews(),
     getTestNews(),
@@ -268,13 +268,15 @@ function getTestNews() {
 //推送数据格式化
 function formatSendData(list) {
   let str = "# 每日精选 \n\n ";
-  console.log(list);
+
   list?.forEach(item => {
-    str += ` ## ${item.title}`
-    item.list.map((item, index) => {
-      str += `\n${index + 1}、[${item.title}](${item.link})    <font color="comment" >${item.time}  ${item.articleAuthor}</font>\n\n`;
-    });
-    str += `\n`
+    if(item) {
+      str += ` ## ${item.title}`
+      item.list.map((item, index) => {
+        str += `\n${index + 1}、[${item.title}](${item.link})    <font color="comment" >${item.time}  ${item.articleAuthor}</font>\n\n`;
+      });
+      str += `\n`
+    }
   })
 
   return {
