@@ -119,11 +119,13 @@ function getYunyingNews() {
         const $ = cheerio.load(body);
         const newsDom = $('.y-post-list');
         let newList = []
-        
+
         newsDom[0]?.children.forEach((item) => {
           const dom = $(item)
           const title = dom.find('.y-title-new a').text()
-          title && title.indexOf('课程') === -1 && title.indexOf('人人都是产品经理') === -1 && newList.push({
+          const articleAuthor = dom.find('.y-meta-new .author').text()
+
+          title && articleAuthor.indexOf('课堂') === -1 && articleAuthor.indexOf('人人都是产品经理') === -1 && newList.push({
             type: 'yunying',
             time: '',
             title: title,
