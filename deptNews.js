@@ -36,15 +36,15 @@ const hasAds = (title) => {
   return adsKeyWords.some((text) => title.indexOf(text) !== -1);
 };
 
-function getNews() {
+const getNews = () => {
   const promiseAll = Promise.all([
     getProductNews(),
     getCsdnBlogNews(),
-    // getFrontNews(),
+    getFrontNews(),
     getTestNews(),
   ])
   promiseAll.then((res) => {
-    console.log(res);
+    sendNews(res)
   }).catch((err) => {
     console.log(err);
   });
@@ -70,10 +70,10 @@ function getTradeNews() {
             articleAuthor: dom.find('.kr-flow-bar-motif a').text(),
           })
         })
-        const result = { type: 'test', list: sortDate(newList).slice(0, 5) }
+        const result = { title: '行业', type: 'trade', list: sortDate(newList).slice(0, 5) }
         resolve(result)
       } else {
-        reject([]);
+        reject(null);
         console.error(err);
       }
     });
@@ -101,9 +101,9 @@ function getProductNews() {
             })
           }
         })
-        resolve({ type: 'product', list: sortDate(result).slice(0, 5) })
+        resolve({ title: '产品', type: 'product', list: sortDate(result).slice(0, 5) })
       } else {
-        reject([]);
+        reject(null);
         console.error(err);
       }
     })
@@ -133,10 +133,10 @@ function getIyunyingNews() {
             viewCount: dom.find('.item-meta-right .views').text()
           })
         })
-        const result = { type: 'operations', list: sortDate(newList).sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
+        const result = { title: '运营', type: 'operations', list: sortDate(newList).sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
         resolve(result)
       } else {
-        reject([]);
+        reject(null);
         console.error(err);
       }
     })
@@ -186,7 +186,7 @@ function getFrontNews() {
             })
           }
         })
-        resolve(sortDate(result).slice(0, 5))
+        resolve({ title: '前端', type: 'front', list: sortDate(result).slice(0, 5) })
       } else {
         console.error(err);
       }
@@ -215,10 +215,10 @@ function getCsdnBlogNews() {
             })
           }
         })
-        const result = { type: 'backend', list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
+        const result = { title: '后端', type: 'backend', list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
         resolve(result)
       } else {
-        reject([]);
+        reject(null);
         console.error(err);
       }
     })
@@ -247,10 +247,10 @@ function getTestNews() {
             viewCount: dom.find('.operation-b-img-active .num').first().text()?.replace('赞', '')
           })
         })
-        const result = { type: 'test', list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
+        const result = { title: '测试', type: 'test', list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 5) }
         resolve(result)
       } else {
-        reject([]);
+        reject(null);
         console.error(err);
       }
     })
@@ -259,11 +259,16 @@ function getTestNews() {
 
 // 产品 运营 行业 前端 后端 测试
 //推送数据格式化
-function formatSendData(data) {
-  let str = "# 每日精选\n\n";
-  data.map((item, index) => {
-    str += `\n${index + 1}、[${item.title}](${item.link})    <font color="comment" >${dayjs(item.publishTime).format('YYYY-MM-DD')}  ${item.articleAuthor}</font>\n\n`;
-  });
+function formatSendData(list) {
+  let str = "# 每日精选 \n\n ";
+  console.log(list);
+  list?.forEach(item => {
+    str += ` ## ${item.title}`
+    item.list.map((item, index) => {
+      str += `\n${index + 1}、[${item.title}](${item.link})    <font color="comment" >${item.time}  ${item.articleAuthor}</font>\n\n`;
+    });
+    str += `\n`
+  })
 
   return {
     msgtype: "markdown",
