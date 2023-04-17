@@ -45,7 +45,7 @@ const getNews = () => {
     getTestNews(),
   ])
   promiseAll.then((res) => {
-    // sendNews(res)
+    sendNews(res)
   }).catch((err) => {
     console.log(err);
   });
