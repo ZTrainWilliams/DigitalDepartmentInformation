@@ -132,7 +132,7 @@ function getYunyingNews() {
             href: dom.find('.y-title-new a').attr('href'),
             description: dom.find('.y-snipper-new').text(),
             them: dom.find('.middotDivider a').text(),
-            articleAuthor: dom.find('.y-meta-new .author').text(),
+            articleAuthor,
             viewCount: 0
           })
         })
