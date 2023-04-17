@@ -154,8 +154,8 @@ function getFrontNews() {
         const reg = /[\;][\n]*[\s]*?$/; //去掉尾部分号
         let sendList = []; //存储推送列表
         const rangeTime = [
-          day.subtract(10, "day").format("YYYY-MM-DD"),
-          day.format("YYYY-MM-DD"),
+          dayjs.subtract(10, "day").format("YYYY-MM-DD"),
+          dayjs.format("YYYY-MM-DD"),
         ];
         newsList.map((item) => {
           //取数据LINKS_DATA变量值
