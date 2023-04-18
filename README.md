@@ -10,6 +10,7 @@
 ## 咨询地址
 ``` javascript
 const productNewsUrl = "https://www.woshipm.com/api2/app/article/popular/daily";
+const yunyingUrl = 'https://www.yunyingpai.com/'
 const csdnBlogUrl = 'https://blog.csdn.net/phoenix/web/blog/hot-rank?page=0&pageSize=25&type='
 const frontNewsUrl = 'https://front-end-rss.vercel.app'
 const testUtl = 'https://blog.csdn.net/nav/test'

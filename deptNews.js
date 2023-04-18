@@ -5,13 +5,12 @@ const cheerio = require("cheerio");
 const weworkKey = process.env.PRODUCT_MAN_WEBHOOK_KEY;
 const webhook = `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${weworkKey}`;
 // 咨询地址
-const newsUrl = "https://www.woshipm.com/api2/app/article/popular/daily";
 const productNewsUrl = "https://www.woshipm.com/api2/app/article/popular/daily";
 const yunyingUrl = 'https://www.yunyingpai.com/'
+const csdnBlogUrl = 'https://blog.csdn.net/phoenix/web/blog/hot-rank?page=0&pageSize=25&type='
+const frontNewsUrl = 'https://front-end-rss.vercel.app'
 const testUtl = 'https://blog.csdn.net/nav/test'
 const krUrl36 = 'https://36kr.com/'
-const frontNewsUrl = 'https://front-end-rss.vercel.app'
-const csdnBlogUrl = 'https://blog.csdn.net/phoenix/web/blog/hot-rank?page=0&pageSize=25&type='
 
 // 排序
 const sortDate = (arr) => {
