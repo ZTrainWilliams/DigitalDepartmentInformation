@@ -135,7 +135,7 @@ function getYunyingNews() {
             viewCount: 0
           })
         })
-        const result = { title: '运营', type: 'operations', list: newList.slice(0, 3) }
+        const result = { title: '运营', type: 'operations', list: newList.slice(0, 5) }
         resolve(result)
       } else {
         reject(null);
@@ -269,7 +269,7 @@ function formatSendData(list) {
   let str = "# 每日精选 \n\n ";
 
   list?.forEach(item => {
-    if(item) {
+    if(item && item.list?.length > 0) {
       str += ` ## ${item.title}`
       item.list.map((item, index) => {
         str += `\n${index + 1}、[${item.title}](${item.link})    <font color="comment" >${item.time}  ${item.articleAuthor}</font>\n\n`;
