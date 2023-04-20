@@ -77,7 +77,7 @@ function getTradeNews() {
         const result = {
           title: "行业",
           type: "trade",
-          list: sortDate(newList).slice(0, 5),
+          list: sortDate(newList).slice(0, 3),
         };
         resolve(result);
       } else {
@@ -112,7 +112,7 @@ function getProductNews() {
         resolve({
           title: "产品",
           type: "product",
-          list: sortDate(result).slice(0, 5),
+          list: sortDate(result).slice(0, 3),
         });
       } else {
         reject(null);
@@ -154,7 +154,7 @@ function getYunyingNews() {
         const result = {
           title: "运营",
           type: "operations",
-          list: newList.slice(0, 5),
+          list: newList.slice(0, 3),
         };
         resolve(result);
       } else {
@@ -214,7 +214,7 @@ function getFrontNews() {
         resolve({
           title: "前端",
           type: "front",
-          list: sortDate(result).slice(0, 5),
+          list: sortDate(result).slice(0, 3),
         });
       } else {
         console.error(err);
@@ -248,7 +248,7 @@ function getCsdnBlogNews() {
         const result = {
           title: "后端",
           type: "backend",
-          list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 5),
+          list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 3),
         };
         resolve(result);
       } else {
@@ -292,7 +292,7 @@ function getTestNews() {
         const result = {
           title: "测试",
           type: "test",
-          list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 5),
+          list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 3),
         };
         resolve(result);
       } else {
@@ -322,7 +322,7 @@ function formatSendData(list) {
     }
   });
 
-  console.log(str);
+  console.log(str, str.length);
 
   return {
     msgtype: "markdown",
@@ -346,7 +346,7 @@ function sendNews(data) {
       if (err) {
         console.error(err);
       } else {
-        console.log(resp);
+        console.log(body);
       }
     }
   );
