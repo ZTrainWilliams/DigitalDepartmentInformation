@@ -36,7 +36,8 @@ const hasAds = (title) => {
   return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
 };
 
-const curDate = dayjs().format('YYYY-MM-DD')
+const curDate = dayjs().format("YYYY-MM-DD");
+const sliceIndex = 5; //文章数量
 
 const getNews = () => {
   const promiseAll = Promise.all([
@@ -79,7 +80,7 @@ function getTradeNews() {
         const result = {
           title: "行业",
           type: "trade",
-          list: sortDate(newList).slice(0, 3),
+          list: sortDate(newList).slice(0, sliceIndex),
         };
         resolve(result);
       } else {
@@ -114,7 +115,7 @@ function getProductNews() {
         resolve({
           title: "产品",
           type: "product",
-          list: sortDate(result).slice(0, 3),
+          list: sortDate(result).slice(0, sliceIndex),
         });
       } else {
         reject(null);
@@ -156,7 +157,7 @@ function getYunyingNews() {
         const result = {
           title: "运营",
           type: "operations",
-          list: newList.slice(0, 3),
+          list: newList.slice(0, sliceIndex),
         };
         resolve(result);
       } else {
@@ -216,7 +217,7 @@ function getFrontNews() {
         resolve({
           title: "前端",
           type: "front",
-          list: sortDate(result).slice(0, 3),
+          list: sortDate(result).slice(0, sliceIndex),
         });
       } else {
         console.error(err);
@@ -250,7 +251,9 @@ function getCsdnBlogNews() {
         const result = {
           title: "后端",
           type: "backend",
-          list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 3),
+          list: newList
+            .sort((a, b) => b.viewCount - a.viewCount)
+            .slice(0, sliceIndex),
         };
         resolve(result);
       } else {
@@ -294,7 +297,9 @@ function getTestNews() {
         const result = {
           title: "测试",
           type: "test",
-          list: newList.sort((a, b) => b.viewCount - a.viewCount).slice(0, 3),
+          list: newList
+            .sort((a, b) => b.viewCount - a.viewCount)
+            .slice(0, sliceIndex),
         };
         resolve(result);
       } else {
@@ -308,11 +313,11 @@ function getTestNews() {
 // 产品 运营 行业 前端 后端 测试
 //推送数据格式化
 function formatSendData(list) {
-  let str = "# 每日精选 \n\n ";
+  let str = "# 每日精选 \n\n";
 
   list?.forEach((item) => {
     if (item && item.list?.length > 0) {
-      str += ` ## ${item.title}\n`;
+      str += `## ${item.title}`;
       item.list.map((item, index) => {
         str += `\n${index + 1}、[${item.title}](${
           item.link
@@ -320,7 +325,7 @@ function formatSendData(list) {
           item.articleAuthor
         }</font>\n`;
       });
-      str += `\n`;
+      str += `\n\n\n`;
     }
   });
 
