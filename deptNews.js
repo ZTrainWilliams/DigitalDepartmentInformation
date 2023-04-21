@@ -36,6 +36,8 @@ const hasAds = (title) => {
   return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
 };
 
+const curDate = dayjs().format('YYYY-MM-DD')
+
 const getNews = () => {
   const promiseAll = Promise.all([
     getProductNews(),
@@ -142,7 +144,7 @@ function getYunyingNews() {
             articleAuthor.indexOf("人人都是产品经理") === -1 &&
             newList.push({
               type: "yunying",
-              time: "",
+              time: curDate,
               title: title,
               href: dom.find(".y-title-new a").attr("href"),
               description: dom.find(".y-snipper-new").text(),
@@ -273,7 +275,7 @@ function getTestNews() {
           title &&
             newList.push({
               type: "test",
-              time: "",
+              time: curDate,
               title: title,
               href: dom.find(".content .blog").attr("href"),
               description: dom.find(".desc").text(),
@@ -310,13 +312,13 @@ function formatSendData(list) {
 
   list?.forEach((item) => {
     if (item && item.list?.length > 0) {
-      str += ` ## ${item.title}`;
+      str += ` ## ${item.title}\n`;
       item.list.map((item, index) => {
         str += `\n${index + 1}、[${item.title}](${
           item.link
         })    <font color="comment" >${item.time}  ${
           item.articleAuthor
-        }</font>\n\n`;
+        }</font>\n`;
       });
       str += `\n`;
     }
