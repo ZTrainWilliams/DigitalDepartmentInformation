@@ -317,11 +317,7 @@ function formatSendStr(list) {
     if (item && item.list?.length > 0) {
       str += `## ${item.title}`;
       item.list.slice(0, sliceIndex).map((item, index) => {
-        str += `\n${index + 1}、[${
-          item.title.length > 22
-            ? item.title.substring(0, 22) + "..."
-            : item.title
-        }](${item.link}) \n`;
+        str += `\n${index + 1}、[${item.title}](${item.link}) \n`;
         //    <font color="comment" >${item.time}  ${
         //   item.articleAuthor
         // }</font>
