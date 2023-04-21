@@ -71,7 +71,7 @@ function getTradeNews() {
               type: "36kr",
               time: dom.find(".kr-flow-bar-time").text(),
               title: dom.find(".article-item-title").text(),
-              href: dom.find(".article-item-title").attr("href"),
+              link: dom.find(".article-item-title").attr("href"),
               description: dom.find(".article-item-description").text(),
               them: dom.find(".kr-flow-bar-motif").text(),
               articleAuthor: dom.find(".kr-flow-bar-motif a").text(),
@@ -147,7 +147,7 @@ function getYunyingNews() {
               type: "yunying",
               time: curDate,
               title: title,
-              href: dom.find(".y-title-new a").attr("href"),
+              link: dom.find(".y-title-new a").attr("href"),
               description: dom.find(".y-snipper-new").text(),
               them: dom.find(".middotDivider a").text(),
               articleAuthor,
@@ -280,7 +280,7 @@ function getTestNews() {
               type: "test",
               time: curDate,
               title: title,
-              href: dom.find(".content .blog").attr("href"),
+              link: dom.find(".content .blog").attr("href"),
               description: dom.find(".desc").text(),
               them: "",
               articleAuthor: dom
@@ -313,7 +313,7 @@ function getTestNews() {
 // 产品 运营 行业 前端 后端 测试
 //推送数据格式化
 function formatSendData(list) {
-  let str = "# 每日精选 \n\n";
+  let str = "# 每日精选\n\n\n";
 
   list?.forEach((item) => {
     if (item && item.list?.length > 0) {
