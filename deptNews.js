@@ -37,7 +37,7 @@ const hasAds = (title) => {
 };
 
 const curDate = dayjs().format("YYYY-MM-DD");
-const sliceIndex = 5; //文章数量
+let sliceIndex = 5; //文章数量
 
 const getNews = () => {
   const promiseAll = Promise.all([
@@ -310,15 +310,17 @@ function getTestNews() {
   });
 }
 
-// 产品 运营 行业 前端 后端 测试
-//推送数据格式化
-function formatSendData(list) {
+function formatSendStr(list) {
   let str = "# 每日精选\n\n\n";
 
   list?.forEach((item) => {
     if (item && item.list?.length > 0) {
-      str += `## ${item.title}`;
-      item.list.map((item, index) => {
+      str += `## ${
+        item.title.length > 22
+          ? item.title.substring(0, 22) + "..."
+          : item.title
+      }`;
+      item.list.slice(0, sliceIndex).map((item, index) => {
         str += `\n${index + 1}、[${item.title}](${
           item.link
         })    <font color="comment" >${item.time}  ${
@@ -329,14 +331,25 @@ function formatSendData(list) {
     }
   });
 
-  console.log(str, str.length);
+  return str;
+}
 
-  return {
+//推送数据格式化
+function formatSendData(list) {
+  let markdownData = {
     msgtype: "markdown",
     markdown: {
-      content: str,
+      content: formatSendStr(list),
     },
   };
+  let str = JSON.stringify(markdownData);
+  console.log(str, str.length);
+  if (str.length > 4096) {
+    sliceIndex--;
+    return formatSendData(list);
+  } else {
+    return str;
+  }
 }
 
 //推送信息
@@ -344,7 +357,7 @@ function sendNews(data) {
   request.post(
     webhook,
     {
-      body: JSON.stringify(formatSendData(data)),
+      body: formatSendData(data),
       headers: {
         "Content-Type": "application/json",
       },
