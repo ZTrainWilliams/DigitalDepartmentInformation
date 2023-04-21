@@ -321,9 +321,10 @@ function formatSendStr(list) {
           item.title.length > 22
             ? item.title.substring(0, 22) + "..."
             : item.title
-        }](${item.link})    <font color="comment" >${item.time}  ${
-          item.articleAuthor
-        }</font>\n`;
+        }](${item.link}) \n`;
+        //    <font color="comment" >${item.time}  ${
+        //   item.articleAuthor
+        // }</font>
       });
       str += `\n\n\n`;
     }
