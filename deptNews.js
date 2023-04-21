@@ -315,15 +315,13 @@ function formatSendStr(list) {
 
   list?.forEach((item) => {
     if (item && item.list?.length > 0) {
-      str += `## ${
-        item.title.length > 22
-          ? item.title.substring(0, 22) + "..."
-          : item.title
-      }`;
+      str += `## ${item.title}`;
       item.list.slice(0, sliceIndex).map((item, index) => {
-        str += `\n${index + 1}、[${item.title}](${
-          item.link
-        })    <font color="comment" >${item.time}  ${
+        str += `\n${index + 1}、[${
+          item.title.length > 22
+            ? item.title.substring(0, 22) + "..."
+            : item.title
+        }](${item.link})    <font color="comment" >${item.time}  ${
           item.articleAuthor
         }</font>\n`;
       });
