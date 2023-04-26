@@ -3,7 +3,7 @@ on:
   push:
   schedule:
     # 定时任务(UTC)
-    - cron: "01 0 * * *"
+    - cron: "59 23 * * *"
 
 env:
   PRODUCT_MAN_WEBHOOK_KEY: ${{ secrets.PRODUCT_MAN_WEBHOOK_KEY }}
