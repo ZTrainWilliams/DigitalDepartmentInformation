@@ -31,6 +31,8 @@ const adsKeyWords = [
   "秋招",
   "面经",
   "福利",
+  "offer",
+  "工资",
 ];
 const hasAds = (title) => {
   return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
@@ -67,6 +69,7 @@ function getTradeNews() {
           const dom = $(item);
           const title = dom.find(".article-item-title").text();
           title &&
+            !hasAds(title) &&
             newList.push({
               type: "36kr",
               time: dom.find(".kr-flow-bar-time").text(),
@@ -143,6 +146,7 @@ function getYunyingNews() {
           title &&
             articleAuthor.indexOf("课堂") === -1 &&
             articleAuthor.indexOf("人人都是产品经理") === -1 &&
+            !hasAds(title) &&
             newList.push({
               type: "yunying",
               time: curDate,
@@ -276,6 +280,7 @@ function getTestNews() {
           const dom = $(item);
           const title = dom.find(".blog-text").text();
           title &&
+            !hasAds(title) &&
             newList.push({
               type: "test",
               time: curDate,
@@ -318,7 +323,7 @@ function formatSendStr(list) {
       str += `## ${item.title}`;
       item.list.slice(0, sliceIndex).map((item, index) => {
         str += `\n${index + 1}、[${item.title}](${item.link})`;
-         //  <font color="comment" > ${item.time}  ${
+        //  <font color="comment" > ${item.time}  ${
         //   item.articleAuthor
         // }</font>
       });
