@@ -46,7 +46,7 @@ const getNews = () => {
     getProductNews(),
     getYunyingNews(),
     getCsdnBlogNews(),
-//     getFrontNews(),
+    getFrontNews(),
     getTestNews(),
   ]);
   promiseAll
@@ -87,8 +87,8 @@ function getTradeNews() {
         };
         resolve(result);
       } else {
-        reject(null);
         console.error(err);
+        reject(null);
       }
     });
   });
@@ -121,8 +121,8 @@ function getProductNews() {
           list: sortDate(result).slice(0, sliceIndex),
         });
       } else {
-        reject(null);
         console.error(err);
+        reject(null);
       }
     });
   });
@@ -165,8 +165,8 @@ function getYunyingNews() {
         };
         resolve(result);
       } else {
-        reject(null);
         console.error(err);
+        reject(null);
       }
     });
   });
@@ -235,8 +235,8 @@ function getFrontNews() {
 function getCsdnBlogNews() {
   return new Promise((resolve, reject) => {
     request.get(csdnBlogUrl, (err, res, body) => {
-      const data = JSON.parse(body);
-      if (!err && data.code == 200) {
+      const data = body && JSON.parse(body);
+      if (!err && data?.code == 200) {
         const newList = [];
         data.data.forEach((item) => {
           if (item && !hasAds(item.articleTitle)) {
@@ -261,8 +261,8 @@ function getCsdnBlogNews() {
         };
         resolve(result);
       } else {
-        reject(null);
         console.error(err);
+        reject(null);
       }
     });
   });
@@ -308,8 +308,8 @@ function getTestNews() {
         };
         resolve(result);
       } else {
-        reject(null);
         console.error(err);
+        reject(null);
       }
     });
   });
