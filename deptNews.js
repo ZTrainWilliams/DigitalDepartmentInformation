@@ -354,22 +354,23 @@ function formatSendData(list) {
 
 //推送信息
 function sendNews(data) {
-  request.post(
-    webhook,
-    {
-      body: formatSendData(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-    function (err, resp, body) {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log(body);
-      }
-    }
-  );
+  console.log(data)
+//   request.post(
+//     webhook,
+//     {
+//       body: formatSendData(data),
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     },
+//     function (err, resp, body) {
+//       if (err) {
+//         console.error(err);
+//       } else {
+//         console.log(body);
+//       }
+//     }
+//   );
 }
 
 getNews();
