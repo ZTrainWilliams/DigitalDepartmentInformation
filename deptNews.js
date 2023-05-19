@@ -45,8 +45,8 @@ const getNews = () => {
   const promiseAll = Promise.all([
     getProductNews(),
     getYunyingNews(),
-//     getCsdnBlogNews(),
-    getFrontNews(),
+    getCsdnBlogNews(),
+//     getFrontNews(),
     getTestNews(),
   ]);
   promiseAll
