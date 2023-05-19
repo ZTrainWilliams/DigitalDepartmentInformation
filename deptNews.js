@@ -45,7 +45,7 @@ const getNews = () => {
   const promiseAll = Promise.all([
     getProductNews(),
     getYunyingNews(),
-    getCsdnBlogNews(),
+//     getCsdnBlogNews(),
     getFrontNews(),
     getTestNews(),
   ]);
@@ -355,22 +355,22 @@ function formatSendData(list) {
 //推送信息
 function sendNews(data) {
   console.log(data)
-//   request.post(
-//     webhook,
-//     {
-//       body: formatSendData(data),
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     },
-//     function (err, resp, body) {
-//       if (err) {
-//         console.error(err);
-//       } else {
-//         console.log(body);
-//       }
-//     }
-//   );
+  request.post(
+    webhook,
+    {
+      body: formatSendData(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+    function (err, resp, body) {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(body);
+      }
+    }
+  );
 }
 
 getNews();
