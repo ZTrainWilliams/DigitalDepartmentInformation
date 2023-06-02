@@ -88,7 +88,11 @@ function getTradeNews() {
         resolve(result);
       } else {
         console.error(err);
-        reject(null);
+        reject({
+          title: "行业",
+          type: "trade",
+          list: [],
+        });
       }
     });
   });
@@ -122,7 +126,11 @@ function getProductNews() {
         });
       } else {
         console.error(err);
-        reject(null);
+        reject({
+          title: "产品",
+          type: "product",
+          list: [],
+        });
       }
     });
   });
@@ -166,7 +174,11 @@ function getYunyingNews() {
         resolve(result);
       } else {
         console.error(err);
-        reject(null);
+        reject({
+          title: "运营",
+          type: "operations",
+          list: [],
+        });
       }
     });
   });
@@ -225,7 +237,11 @@ function getFrontNews() {
         });
       } else {
         console.error(err);
-        reject(null);
+        reject({
+          title: "前端",
+          type: "front",
+          list: [],
+        });
       }
     });
   });
@@ -262,7 +278,11 @@ function getCsdnBlogNews() {
         resolve(result);
       } else {
         console.error(err);
-        reject(null);
+        reject({
+          title: "后端",
+          type: "backend",
+          list: [],
+        });
       }
     });
   });
@@ -271,47 +291,58 @@ function getCsdnBlogNews() {
 // 获取测试咨询
 function getTestNews() {
   return new Promise((resolve, reject) => {
-    request.get(testUtl, (err, res, body) => {
-      if (!err) {
-        const $ = cheerio.load(body);
-        const newsDom = $(".blog-content .Community");
-        let newList = [];
-        newsDom[0]?.children.forEach((item) => {
-          const dom = $(item);
-          const title = dom.find(".blog-text").text();
-          title &&
-            !hasAds(title) &&
-            newList.push({
-              type: "test",
-              time: curDate,
-              title: title,
-              link: dom.find(".content .blog").attr("href"),
-              description: dom.find(".desc").text(),
-              them: "",
-              articleAuthor: dom
-                .find(".operation-c a")
-                .text()
-                ?.replace("作者：", ""),
-              viewCount: dom
-                .find(".operation-b-img-active .num")
-                .first()
-                .text()
-                ?.replace("赞", ""),
-            });
-        });
-        const result = {
-          title: "测试",
-          type: "test",
-          list: newList
-            .sort((a, b) => b.viewCount - a.viewCount)
-            .slice(0, sliceIndex),
-        };
-        resolve(result);
-      } else {
-        console.error(err);
-        reject(null);
+    request(
+      {
+        url: testUtl,
+        method: "GET",
+        timeout: 20000,
+      },
+      (err, res, body) => {
+        if (!err) {
+          const $ = cheerio.load(body);
+          const newsDom = $(".blog-content .Community");
+          let newList = [];
+          newsDom[0]?.children.forEach((item) => {
+            const dom = $(item);
+            const title = dom.find(".blog-text").text();
+            title &&
+              !hasAds(title) &&
+              newList.push({
+                type: "test",
+                time: curDate,
+                title: title,
+                link: dom.find(".content .blog").attr("href"),
+                description: dom.find(".desc").text(),
+                them: "",
+                articleAuthor: dom
+                  .find(".operation-c a")
+                  .text()
+                  ?.replace("作者：", ""),
+                viewCount: dom
+                  .find(".operation-b-img-active .num")
+                  .first()
+                  .text()
+                  ?.replace("赞", ""),
+              });
+          });
+          const result = {
+            title: "测试",
+            type: "test",
+            list: newList
+              .sort((a, b) => b.viewCount - a.viewCount)
+              .slice(0, sliceIndex),
+          };
+          resolve(result);
+        } else {
+          console.error(err);
+          reject({
+            title: "测试",
+            type: "test",
+            list: [],
+          });
+        }
       }
-    });
+    );
   });
 }
 
@@ -354,7 +385,6 @@ function formatSendData(list) {
 
 //推送信息
 function sendNews(data) {
-  console.log(data)
   request.post(
     webhook,
     {
