@@ -33,6 +33,7 @@ const adsKeyWords = [
   "福利",
   "offer",
   "工资",
+  "辞职"
 ];
 const hasAds = (title) => {
   return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
@@ -385,6 +386,16 @@ function formatSendData(list) {
 
 //推送信息
 function sendNews(data) {
+  data.forEach(o => {
+    let list = [o.list[0]];
+    for (let i = 1; i < o.list.length; i++) {
+      const element = o.list[i];
+      if(!list.find(v => v.title === element.title)) {
+        list.push(element)
+      }
+    }
+    o.list = list
+  })
   request.post(
     webhook,
     {
