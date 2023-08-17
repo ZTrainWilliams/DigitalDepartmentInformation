@@ -353,8 +353,8 @@ function formatSendStr(list) {
   list?.forEach((item) => {
     if (item && item.list?.length > 0) {
       str += `## ${item.title}`;
-      item.list.slice(0, sliceIndex).map((item, index) => {
-        str += `\n${index + 1}、[${item.title}](${item.link})`;
+      item.list.slice(0, sliceIndex).map((m, index) => {
+        str += m ? `\n${index + 1}、[${m?.title}](${m?.link})` : '';
         //  <font color="comment" > ${item.time}  ${
         //   item.articleAuthor
         // }</font>
