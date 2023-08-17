@@ -33,7 +33,8 @@ const adsKeyWords = [
   "福利",
   "offer",
   "工资",
-  "辞职"
+  "辞职",
+  "课程"
 ];
 const hasAds = (title) => {
   return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
@@ -144,13 +145,13 @@ function getYunyingNews() {
       // 403?
       if (!err) {
         const $ = cheerio.load(body);
-        const newsDom = $(".y-post-list");
+        const newsDom = $(".storyList");
         let newList = [];
 
         newsDom[0]?.children.forEach((item) => {
           const dom = $(item);
-          const title = dom.find(".y-title-new a").text();
-          const articleAuthor = dom.find(".y-meta-new .author").text();
+          const title = dom.find(".storyItem--title a").text();
+          const articleAuthor = dom.find(".author a").text();
 
           title &&
             articleAuthor.indexOf("课堂") === -1 &&
@@ -160,13 +161,17 @@ function getYunyingNews() {
               type: "yunying",
               time: curDate,
               title: title,
-              link: dom.find(".y-title-new a").attr("href"),
-              description: dom.find(".y-snipper-new").text(),
-              them: dom.find(".middotDivider a").text(),
+              link: dom.find(".storyItem--title a").attr("href"),
+              description: dom.find(".storyItem--description").text(),
+              them: dom
+                .find(".storyItem--meta a")
+                .text()
+                .replace(articleAuthor, ""),
               articleAuthor,
               viewCount: 0,
             });
         });
+        // console.log("newList", newList);
         const result = {
           title: "运营",
           type: "operations",
@@ -354,7 +359,7 @@ function formatSendStr(list) {
     if (item && item.list?.length > 0) {
       str += `## ${item.title}`;
       item.list.slice(0, sliceIndex).map((m, index) => {
-        str += m ? `\n${index + 1}、[${m?.title}](${m?.link})` : '';
+        str += m ? `\n${index + 1}、[${m?.title}](${m?.link})` : "";
         //  <font color="comment" > ${item.time}  ${
         //   item.articleAuthor
         // }</font>
@@ -386,16 +391,16 @@ function formatSendData(list) {
 
 //推送信息
 function sendNews(data) {
-  data.forEach(o => {
+  data.forEach((o) => {
     let list = [o.list[0]];
     for (let i = 1; i < o.list.length; i++) {
       const element = o.list[i];
-      if(!list.find(v => v.title === element.title)) {
-        list.push(element)
+      if (!list.find((v) => v.title === element.title)) {
+        list.push(element);
       }
     }
-    o.list = list
-  })
+    o.list = list;
+  });
   request.post(
     webhook,
     {
