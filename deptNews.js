@@ -371,7 +371,7 @@ function formatSendStr(list) {
   return str;
 }
 
-//推送数据格式化
+// 推送数据格式化
 function formatSendData(list) {
   let markdownData = {
     msgtype: "markdown",
@@ -389,7 +389,7 @@ function formatSendData(list) {
   }
 }
 
-//推送信息
+// 推送信息
 function sendNews(data) {
   data.forEach((o) => {
     let list = [o.list[0]];
