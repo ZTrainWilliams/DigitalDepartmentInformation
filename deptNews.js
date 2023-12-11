@@ -34,7 +34,8 @@ const adsKeyWords = [
   "offer",
   "工资",
   "辞职",
-  "课程"
+  "课程",
+  "薪资"
 ];
 const hasAds = (title) => {
   return title && adsKeyWords.some((text) => title.indexOf(text) !== -1);
